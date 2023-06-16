@@ -23,6 +23,20 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
     return createdUser;
 };
 
+const getAllUsers = async () => {
+    const result = await User.find();
+
+    return result;
+};
+
+const getSingleUser = async (id: any) => {
+    const result = await User.findById(id);
+
+    return result;
+};
+
 export const UserService = {
     createUser,
+    getAllUsers,
+    getSingleUser,
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import httpStatus from 'http-status';
+import httpStatus, { OK } from 'http-status';
 import { UserService } from './user.service';
 
 const createUser = async (req: Request, res: Response) => {
@@ -18,6 +18,30 @@ const createUser = async (req: Request, res: Response) => {
     }
 };
 
+const getAllUsers = async (req: Request, res: Response) => {
+    const result = await UserService.getAllUsers();
+
+    res.status(OK).json({
+        success: true,
+        statusCode: OK,
+        message: '🆗 Users data retrieved successfully',
+        data: result,
+    });
+};
+const getSingleUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const result = await UserService.getSingleUser(id);
+
+    res.status(OK).json({
+        success: true,
+        statusCode: OK,
+        message: '🆗 Users data retrieved successfully',
+        data: result,
+    });
+};
+
 export const UserController = {
     createUser,
+    getAllUsers,
+    getSingleUser,
 };
