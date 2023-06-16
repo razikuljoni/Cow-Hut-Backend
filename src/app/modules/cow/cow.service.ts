@@ -1,3 +1,5 @@
+import { SortOrder } from 'mongoose';
+import { IGenericResponse } from '../../../interfaces/commonGeneric';
 import { ICow } from './cow.interface';
 import { Cow } from './cow.model';
 
@@ -7,10 +9,45 @@ const createCow = async (cow: ICow): Promise<ICow | null> => {
     return createdCow;
 };
 
-const getAllCows = async () => {
-    const allCows = await Cow.find();
+type IPaginationOptions = {
+    page?: number;
+    limit?: number;
+    sortBy?: string;
+    sortOrder?: SortOrder;
+    minPrice?: number;
+    maxPrice?: number;
+    location?: string;
+    searchTerm?: string;
+};
 
-    return allCows;
+const getAllCows = async (
+    paginationOptions: IPaginationOptions
+): Promise<IGenericResponse<ICow[]>> => {
+    const { page = 1, limit = 10 } = paginationOptions;
+    const skip = (page - 1) * limit;
+    const sortBy = paginationOptions.sortBy || 'createdAt';
+    const sortOrder = paginationOptions.sortOrder || 'desc';
+
+    const sortConditions: { [key: string]: SortOrder } = {};
+
+    if (sortBy && sortOrder) {
+        sortConditions[sortBy] = sortOrder;
+    }
+
+    const allCows = await Cow.find()
+        .sort(sortConditions)
+        .skip(skip)
+        .limit(limit);
+    const total = await Cow.countDocuments();
+
+    return {
+        meta: {
+            page,
+            limit,
+            total,
+        },
+        data: allCows,
+    };
 };
 
 const getSingleCow = async (id: string) => {

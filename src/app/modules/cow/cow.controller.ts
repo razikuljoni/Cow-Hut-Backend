@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import pick from '../../shared/pick';
 import { CowService } from './cow.service';
 
 const createCow = async (req: Request, res: Response) => {
@@ -19,13 +20,25 @@ const createCow = async (req: Request, res: Response) => {
 };
 
 const getAllCows = async (req: Request, res: Response) => {
-    const result = await CowService.getAllCows();
+    const paginationOptions = pick(req.query, [
+        'page',
+        'limit',
+        'sortBy',
+        'sortOrder',
+        'minPrice',
+        'maxPrice',
+        'location',
+        'searchTerm',
+    ]);
+    console.log(paginationOptions);
+    const result = await CowService.getAllCows(paginationOptions);
 
     res.status(httpStatus.OK).json({
         success: true,
         statusCode: httpStatus.OK,
         message: '🆗 Cows data retrived successfully!',
-        data: result,
+        meta: result.meta || null,
+        data: result.data,
     });
 };
 
