@@ -28,6 +28,7 @@ const getAllUsers = async (req: Request, res: Response) => {
         data: result,
     });
 };
+
 const getSingleUser = async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await UserService.getSingleUser(id);
@@ -40,8 +41,37 @@ const getSingleUser = async (req: Request, res: Response) => {
     });
 };
 
+const updateUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const updatedData = req.body;
+
+    const result = await UserService.updateUser(id, updatedData);
+
+    res.status(OK).json({
+        success: true,
+        statusCode: OK,
+        message: '🆗 Users data updated successfully',
+        data: result,
+    });
+};
+
+const deleteUser = async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const result = await UserService.deleteUser(id);
+
+    res.status(OK).json({
+        success: true,
+        statusCode: OK,
+        message: '🆗 Users deleted successfully!',
+        data: result,
+    });
+};
+
 export const UserController = {
     createUser,
     getAllUsers,
     getSingleUser,
+    updateUser,
+    deleteUser,
 };
