@@ -10,7 +10,7 @@ const userSchema = new Schema<IUser>(
         role: {
             type: 'String',
             required: true,
-            enum: ['Buyer', 'Seller'],
+            enum: ['buyer', 'seller'],
         },
         name: {
             firstName: {
