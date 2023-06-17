@@ -1,9 +1,10 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
+import catchAsync from '../../shared/catchAsync';
 import pick from '../../shared/pick';
 import { CowService } from './cow.service';
 
-const createCow = async (req: Request, res: Response) => {
+const createCow = catchAsync(async (req: Request, res: Response) => {
     try {
         const cow = req.body;
         const result = await CowService.createCow(cow);
@@ -17,9 +18,9 @@ const createCow = async (req: Request, res: Response) => {
     } catch (error: any) {
         console.log(error.message);
     }
-};
+});
 
-const getAllCows = async (req: Request, res: Response) => {
+const getAllCows = catchAsync(async (req: Request, res: Response) => {
     const filters = pick(req.query, ['searchTerm']);
     const paginationOptions = pick(req.query, [
         'page',
@@ -39,9 +40,9 @@ const getAllCows = async (req: Request, res: Response) => {
         meta: result.meta || null,
         data: result.data,
     });
-};
+});
 
-const getSingleCow = async (req: Request, res: Response) => {
+const getSingleCow = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await CowService.getSingleCow(id);
 
@@ -51,9 +52,9 @@ const getSingleCow = async (req: Request, res: Response) => {
         message: '🆗Single Cow data retrived successfully!',
         data: result,
     });
-};
+});
 
-const updateCow = async (req: Request, res: Response) => {
+const updateCow = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const updateCow = req.body;
     const result = await CowService.updateCow(id, updateCow);
@@ -64,9 +65,9 @@ const updateCow = async (req: Request, res: Response) => {
         message: '🆗 Cow data updated successfully!',
         data: result,
     });
-};
+});
 
-const deleteCow = async (req: Request, res: Response) => {
+const deleteCow = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await CowService.deleteCow(id);
 
@@ -76,7 +77,7 @@ const deleteCow = async (req: Request, res: Response) => {
         message: '🆗 Cow deleted successfully!',
         data: result,
     });
-};
+});
 
 export const CowController = {
     createCow,

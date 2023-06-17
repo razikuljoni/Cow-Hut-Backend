@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import { OK } from 'http-status';
+import catchAsync from '../../shared/catchAsync';
 import { UserService } from './user.service';
 
-const getAllUsers = async (req: Request, res: Response) => {
+const getAllUsers = catchAsync(async (req: Request, res: Response) => {
     const result = await UserService.getAllUsers();
 
     res.status(OK).json({
@@ -11,9 +12,9 @@ const getAllUsers = async (req: Request, res: Response) => {
         message: '🆗 Users data retrieved successfully',
         data: result,
     });
-};
+});
 
-const getSingleUser = async (req: Request, res: Response) => {
+const getSingleUser = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const result = await UserService.getSingleUser(id);
 
@@ -23,9 +24,9 @@ const getSingleUser = async (req: Request, res: Response) => {
         message: '🆗 Users data retrieved successfully',
         data: result,
     });
-};
+});
 
-const updateUser = async (req: Request, res: Response) => {
+const updateUser = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
     const updatedData = req.body;
 
@@ -37,9 +38,9 @@ const updateUser = async (req: Request, res: Response) => {
         message: '🆗 Users data updated successfully',
         data: result,
     });
-};
+});
 
-const deleteUser = async (req: Request, res: Response) => {
+const deleteUser = catchAsync(async (req: Request, res: Response) => {
     const { id } = req.params;
 
     const result = await UserService.deleteUser(id);
@@ -50,7 +51,7 @@ const deleteUser = async (req: Request, res: Response) => {
         message: '🆗 Users deleted successfully!',
         data: result,
     });
-};
+});
 
 export const UserController = {
     getAllUsers,
