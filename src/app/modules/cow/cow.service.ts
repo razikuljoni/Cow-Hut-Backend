@@ -23,7 +23,13 @@ type IPaginationOptions = {
 const getAllCows = async (
     paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<ICow[]>> => {
-    const { page = 1, limit = 10 } = paginationOptions;
+    const {
+        page = 1,
+        limit = 10,
+        minPrice,
+        maxPrice,
+        location,
+    } = paginationOptions;
     const skip = (page - 1) * limit;
     const sortBy = paginationOptions.sortBy || 'createdAt';
     const sortOrder = paginationOptions.sortOrder || 'desc';
@@ -34,7 +40,19 @@ const getAllCows = async (
         sortConditions[sortBy] = sortOrder;
     }
 
-    const allCows = await Cow.find()
+    const searchCondition =
+        location || (minPrice && maxPrice)
+            ? {
+                  $or: [
+                      { price: { $gte: minPrice, $lte: maxPrice } },
+                      {
+                          location: location,
+                      },
+                  ],
+              }
+            : {};
+
+    const allCows = await Cow.find(searchCondition)
         .sort(sortConditions)
         .skip(skip)
         .limit(limit);
