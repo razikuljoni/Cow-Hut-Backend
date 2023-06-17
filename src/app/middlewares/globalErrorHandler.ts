@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import configs from '../../configs';
-
-export type IGenericErrorMessage = {
-    path: string | number;
-    message: string;
-};
+import handleValidationError from '../errors/handleValidationError';
+import { IGenericErrorMessage } from '../interfaces/error';
 
 const globalErrorHandler = (
     error: any,
@@ -12,9 +9,16 @@ const globalErrorHandler = (
     res: Response,
     next: NextFunction
 ) => {
-    const statusCode = 500;
-    const message = 'Something went wrong !';
-    const errorMessages: IGenericErrorMessage[] = [];
+    let statusCode = 500;
+    let message = 'Something went wrong !';
+    let errorMessages: IGenericErrorMessage[] = [];
+
+    if (error?.name === 'ValidationError') {
+        const simplifiedError = handleValidationError(error);
+        statusCode = simplifiedError.statusCode;
+        message = simplifiedError.message;
+        errorMessages = simplifiedError.errorMessages;
+    }
 
     res.status(statusCode).json({
         success: false,
@@ -22,6 +26,7 @@ const globalErrorHandler = (
         errorMessages,
         stack: configs.env !== 'production' ? error?.stack : undefined,
     });
+
     next();
 };
 
