@@ -1,8 +1,8 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import httpStatus from 'http-status';
 import { AuthService } from './auth.service';
 
-const createUser = async (req: Request, res: Response) => {
+const createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.body;
         const result = await AuthService.createUser(user);
@@ -14,7 +14,7 @@ const createUser = async (req: Request, res: Response) => {
             data: result,
         });
     } catch (error: any) {
-        console.log(error.message);
+        next(error);
     }
 };
 

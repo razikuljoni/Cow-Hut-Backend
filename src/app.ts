@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import router from './app/routes';
 const app = express();
 
@@ -16,5 +17,8 @@ app.use('/api/v1/', router);
 // app.get('/api/v1', (req: Request, res: Response, next: NextFunction) => {
 //     throw new ApiError(httpStatus.NOT_FOUND, 'Not implemented');
 // });
+
+// Global Error Handler
+app.use(globalErrorHandler);
 
 export default app;
