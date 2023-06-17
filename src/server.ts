@@ -3,8 +3,13 @@ import mongoose from 'mongoose';
 import app from './app';
 import configs from './configs';
 
+let server: Server;
+
+process.on('uncaughtException', () => {
+    process.exit(1);
+});
+
 async function main() {
-    let server: Server;
     try {
         await mongoose.connect(configs.database_url as string);
         console.log('🆗 Database Connection Successfull!');
@@ -28,3 +33,9 @@ async function main() {
 }
 
 main();
+
+process.on('SIGTERM', () => {
+    if (server) {
+        server.close();
+    }
+});
