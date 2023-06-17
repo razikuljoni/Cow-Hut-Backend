@@ -5,19 +5,15 @@ import pick from '../../shared/pick';
 import { CowService } from './cow.service';
 
 const createCow = catchAsync(async (req: Request, res: Response) => {
-    try {
-        const cow = req.body;
-        const result = await CowService.createCow(cow);
+    const cow = req.body;
+    const result = await CowService.createCow(cow);
 
-        res.status(httpStatus.OK).json({
-            success: true,
-            statusCode: httpStatus.OK,
-            message: '🆗 Cow created successfully',
-            data: result,
-        });
-    } catch (error: any) {
-        console.log(error.message);
-    }
+    res.status(httpStatus.OK).json({
+        success: true,
+        statusCode: httpStatus.OK,
+        message: '🆗 Cow created successfully',
+        data: result,
+    });
 });
 
 const getAllCows = catchAsync(async (req: Request, res: Response) => {

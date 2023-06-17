@@ -1,18 +1,22 @@
-import { BAD_REQUEST } from 'http-status';
+import { NOT_ACCEPTABLE } from 'http-status';
 import { SortOrder } from 'mongoose';
 import { IGenericResponse } from '../../../interfaces/commonGeneric';
 import ApiError from '../../errors/ApiError';
+import { User } from '../user/user.model';
 import { ICow } from './cow.interface';
 import { Cow } from './cow.model';
 
-const createCow = async (cow: ICow): Promise<ICow | null> => {
-    const createdCow = (await Cow.create(cow)).populate('seller');
-
-    if (!createdCow) {
-        throw new ApiError(BAD_REQUEST, '🚫 Cow creation failed!');
+const createCow = async (cow: ICow): Promise<ICow | null | undefined> => {
+    const result = await User.findById(cow.seller);
+    if (result?.role.toLowerCase() === 'seller') {
+        const createdCow = (await Cow.create(cow)).populate('seller');
+        return createdCow;
+    } else {
+        throw new ApiError(
+            NOT_ACCEPTABLE,
+            '🚫 Given seller id is not a valid seller!'
+        );
     }
-
-    return createdCow;
 };
 
 type IPaginationOptions = {
