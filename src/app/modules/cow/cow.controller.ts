@@ -20,6 +20,7 @@ const createCow = async (req: Request, res: Response) => {
 };
 
 const getAllCows = async (req: Request, res: Response) => {
+    const filters = pick(req.query, ['searchTerm']);
     const paginationOptions = pick(req.query, [
         'page',
         'limit',
@@ -28,10 +29,8 @@ const getAllCows = async (req: Request, res: Response) => {
         'minPrice',
         'maxPrice',
         'location',
-        'searchTerm',
     ]);
-    console.log(paginationOptions);
-    const result = await CowService.getAllCows(paginationOptions);
+    const result = await CowService.getAllCows(filters, paginationOptions);
 
     res.status(httpStatus.OK).json({
         success: true,

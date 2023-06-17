@@ -20,7 +20,12 @@ type IPaginationOptions = {
     searchTerm?: string;
 };
 
+type ICowFilters = {
+    searchTerm?: string;
+};
+
 const getAllCows = async (
+    filters: ICowFilters,
     paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<ICow[]>> => {
     const {
@@ -33,6 +38,7 @@ const getAllCows = async (
     const skip = (page - 1) * limit;
     const sortBy = paginationOptions.sortBy || 'createdAt';
     const sortOrder = paginationOptions.sortOrder || 'desc';
+    const { searchTerm } = filters;
 
     const sortConditions: { [key: string]: SortOrder } = {};
 
@@ -40,17 +46,52 @@ const getAllCows = async (
         sortConditions[sortBy] = sortOrder;
     }
 
-    const searchCondition =
-        location || (minPrice && maxPrice)
-            ? {
-                  $or: [
-                      { price: { $gte: minPrice, $lte: maxPrice } },
-                      {
-                          location: location,
-                      },
-                  ],
-              }
-            : {};
+    const cowSearchableFields = [
+        'name',
+        'location',
+        'breed',
+        'label',
+        'category',
+    ];
+    const stringSearchTermConditions = [];
+    if (searchTerm) {
+        stringSearchTermConditions.push({
+            $or: cowSearchableFields.map(field => ({
+                [field]: {
+                    $regex: searchTerm,
+                    $options: 'i',
+                },
+            })),
+        });
+    }
+
+    const cowNumberSearchableFields = ['price', 'age', 'weight'];
+    const numbersearchConditions = [];
+    if (searchTerm) {
+        numbersearchConditions.push({
+            $or: cowNumberSearchableFields.map(field => ({
+                [field]: searchTerm.match('^[0-9]*$'),
+            })),
+        });
+    }
+
+    let searchCondition;
+    if (searchTerm?.match('^[A-Za-z]+$')) {
+        searchCondition = { $and: stringSearchTermConditions };
+    } else if (searchTerm?.match('^[0-9]*$')) {
+        searchCondition = { $and: numbersearchConditions };
+    } else if (minPrice && maxPrice) {
+        searchCondition = { price: { $gte: minPrice, $lte: maxPrice } };
+    } else if (location) {
+        searchCondition = {
+            location: {
+                $regex: location,
+                $options: 'i',
+            },
+        };
+    } else {
+        searchCondition = {};
+    }
 
     const allCows = await Cow.find(searchCondition)
         .sort(sortConditions)
