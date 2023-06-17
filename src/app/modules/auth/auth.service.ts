@@ -1,3 +1,5 @@
+import { BAD_REQUEST } from 'http-status';
+import ApiError from '../../errors/ApiError';
 import { IUser } from '../user/user.interface';
 import { User } from '../user/user.model';
 
@@ -20,6 +22,9 @@ const createUser = async (user: IUser): Promise<IUser | null> => {
 
     const createdUser = await User.create(user);
 
+    if (!createdUser) {
+        throw new ApiError(BAD_REQUEST, '🚫 User creation failed!');
+    }
     return createdUser;
 };
 

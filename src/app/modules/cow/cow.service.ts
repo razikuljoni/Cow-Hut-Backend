@@ -1,10 +1,16 @@
+import { BAD_REQUEST } from 'http-status';
 import { SortOrder } from 'mongoose';
 import { IGenericResponse } from '../../../interfaces/commonGeneric';
+import ApiError from '../../errors/ApiError';
 import { ICow } from './cow.interface';
 import { Cow } from './cow.model';
 
 const createCow = async (cow: ICow): Promise<ICow | null> => {
     const createdCow = (await Cow.create(cow)).populate('seller');
+
+    if (!createdCow) {
+        throw new ApiError(BAD_REQUEST, '🚫 Cow creation failed!');
+    }
 
     return createdCow;
 };
