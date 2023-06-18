@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { OK } from 'http-status';
-import catchAsync from '../../shared/catchAsync';
+import catchAsync from '../../../shared/catchAsync';
 import { UserService } from './user.service';
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {

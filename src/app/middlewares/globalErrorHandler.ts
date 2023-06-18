@@ -1,9 +1,11 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ErrorRequestHandler } from 'express';
 import configs from '../../configs';
-import ApiError from '../errors/ApiError';
-import handleCastError from '../errors/handleCastError';
-import handleValidationError from '../errors/handleValidationError';
-import { IGenericErrorMessage } from '../interfaces/error';
+import ApiError from '../../errors/ApiError';
+import handleCastError from '../../errors/handleCastError';
+import handleValidationError from '../../errors/handleValidationError';
+import { IGenericErrorMessage } from '../../interfaces/error';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     let statusCode = 500;
@@ -49,8 +51,6 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
         errorMessages,
         stack: configs.env !== 'production' ? error?.stack : undefined,
     });
-
-    next();
 };
 
 export default globalErrorHandler;

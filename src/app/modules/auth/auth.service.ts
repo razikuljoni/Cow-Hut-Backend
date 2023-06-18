@@ -1,5 +1,5 @@
 import { BAD_REQUEST } from 'http-status';
-import ApiError from '../../errors/ApiError';
+import ApiError from '../../../errors/ApiError';
 import { IUser } from '../user/user.interface';
 import { User } from '../user/user.model';
 

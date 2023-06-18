@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
-import catchAsync from '../../shared/catchAsync';
-import pick from '../../shared/pick';
+import catchAsync from '../../../shared/catchAsync';
+import pick from '../../../shared/pick';
 import { CowService } from './cow.service';
 
 const createCow = catchAsync(async (req: Request, res: Response) => {
