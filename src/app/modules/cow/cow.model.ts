@@ -6,6 +6,7 @@ const cowSchema = new Schema<ICow>(
         name: {
             type: String,
             required: true,
+            unique: true,
         },
         age: {
             type: Number,
@@ -40,6 +41,7 @@ const cowSchema = new Schema<ICow>(
         label: {
             type: String,
             required: true,
+            default: 'for sale',
             enum: ['for sale', 'sold out'],
         },
         category: {

@@ -6,6 +6,7 @@ const cowSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
+        unique: true,
     },
     age: {
         type: Number,
@@ -40,6 +41,7 @@ const cowSchema = new mongoose_1.Schema({
     label: {
         type: String,
         required: true,
+        default: 'for sale',
         enum: ['for sale', 'sold out'],
     },
     category: {
