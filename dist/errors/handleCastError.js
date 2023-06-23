@@ -1,6 +1,6 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const handleCastError = (error) => {
+'use strict';
+Object.defineProperty(exports, '__esModule', { value: true });
+const handleCastError = error => {
     const errors = [
         {
             path: error.path,
