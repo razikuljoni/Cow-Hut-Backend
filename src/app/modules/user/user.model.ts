@@ -3,11 +3,12 @@ import { IUser, UserModel } from './user.interface';
 import bcrypt from 'bcrypt';
 import configs from '../../../configs';
 
-const userSchema = new Schema<IUser>(
+const userSchema = new Schema<IUser, UserModel>(
     {
         password: {
             type: 'String',
             required: true,
+            select: 0,
         },
         role: {
             type: 'String',
@@ -46,6 +47,13 @@ const userSchema = new Schema<IUser>(
         },
     }
 );
+
+userSchema.set('toJSON', {
+    transform: function (doc, ret) {
+        delete ret.password;
+        return ret;
+    },
+});
 
 userSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(

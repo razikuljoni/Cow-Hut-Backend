@@ -27,6 +27,13 @@ const AdminSchema = new Schema<IAdmin>({
     address: { type: String, required: true },
 });
 
+AdminSchema.set('toJSON', {
+    transform: function (doc, ret) {
+        delete ret.password;
+        return ret;
+    },
+});
+
 AdminSchema.pre('save', async function (next) {
     this.password = await bcrypt.hash(
         this.password,
