@@ -3,7 +3,15 @@ import { OK } from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
 import { UserService } from './user.service';
 
+// Extend the Request interface to include the 'user' property
+declare module 'express' {
+    // eslint-disable-next-line
+    interface Request {
+        user?: any;
+    }
+}
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
+    // console.log(req.user)
     const result = await UserService.getAllUsers();
 
     res.status(OK).json({
