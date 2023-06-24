@@ -61,13 +61,66 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
     }
 };
 
-const getAllOrders = async (): Promise<IOrder[] | null> => {
-    const result = await Order.find();
+const getAllOrders = async (
+    id: string,
+    role: string
+): Promise<IOrder[] | null | undefined> => {
+    if (role === 'seller') {
+        const orders = await Order.find();
+        const orderedCows = orders.map(order => order.cow.toString());
+        const cows = await Cow.find({ _id: orderedCows });
+        const seller = cows.filter(cow => {
+            if (cow.seller.toString() === id) {
+                return cow;
+            }
+        });
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        return seller;
+    } else if (role === 'buyer') {
+        const user = await User.findById(id);
+        const userId = user?._id.toString();
+        const orders = await Order.find({ buyer: userId });
+        return orders;
+    } else if (role === 'admin') {
+        const result = await Order.find();
+        return result;
+    }
+};
 
-    return result;
+const getOrderById = async (
+    id: string,
+    role: string,
+    orderId: string
+): Promise<IOrder[] | object | null | undefined> => {
+    console.log(id, await Order.find());
+
+    if (role === 'seller') {
+        const order = await Order.findById(orderId);
+        const cow = await Cow.findById(order?.cow.toString());
+        const buyer = await User.findById(order?.buyer.toString());
+        const cowDetails = await cow?.populate('seller');
+        return {
+            cow: cowDetails,
+            buyer,
+        };
+    } else if (role === 'buyer') {
+        const order = await Order.findById(orderId);
+        const cow = await Cow.findById(order?.cow.toString());
+        const buyer = await User.findById(order?.buyer.toString());
+        const cowDetails = await cow?.populate('seller');
+        return {
+            cow: cowDetails,
+            buyer,
+        };
+    } else if (role === 'admin') {
+        const result = await Order.find();
+        return result;
+    }
 };
 
 export const OrderService = {
     createOrder,
     getAllOrders,
+    getOrderById,
 };
