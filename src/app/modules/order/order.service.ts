@@ -93,8 +93,6 @@ const getOrderById = async (
     role: string,
     orderId: string
 ): Promise<IOrder[] | object | null | undefined> => {
-    console.log(id, await Order.find());
-
     if (role === 'seller') {
         const order = await Order.findById(orderId);
         const cow = await Cow.findById(order?.cow.toString());
