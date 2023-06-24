@@ -1,27 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -46,26 +23,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthController = void 0;
-const http_status_1 = __importStar(require("http-status"));
-const auth_service_1 = require("./auth.service");
+exports.AdminController = void 0;
 const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
+const admin_service_1 = require("./admin.service");
+const http_status_1 = require("http-status");
 const configs_1 = __importDefault(require("../../../configs"));
-const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = req.body;
-    const result = yield auth_service_1.AuthService.createUser(user);
-    // const {password , ...data} = result;
-    // createLogger(password)
-    res.status(http_status_1.default.OK).json({
+const createAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const admin = req.body;
+    const result = yield admin_service_1.AdminService.createAdmin(admin);
+    res.status(http_status_1.OK).json({
         success: true,
-        statusCode: http_status_1.default.OK,
-        message: 'Users created successfully',
+        statusCode: http_status_1.OK,
+        message: '🆗 Admin Created Successfully!',
         data: result,
     });
 }));
-const userLogin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const loginAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const loginData = __rest(req.body, []);
-    const result = yield auth_service_1.AuthService.userLogin(loginData);
+    const result = yield admin_service_1.AdminService.loginAdmin(loginData);
     const { refreshToken, accessToken } = result;
     res.cookie('refreshToken', refreshToken, {
         secure: configs_1.default.env === 'production',
@@ -74,13 +49,13 @@ const userLogin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
     res.status(http_status_1.OK).json({
         success: true,
         statusCode: http_status_1.OK,
-        message: '🆗 User LoggedIn Successfully!',
+        message: '🆗 Admin LoggedIn Successfully!',
         data: { accessToken },
     });
 }));
 const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.cookies;
-    const result = yield auth_service_1.AuthService.refreshToken(refreshToken);
+    const result = yield admin_service_1.AdminService.refreshToken(refreshToken);
     res.cookie('refreshToken', refreshToken, {
         secure: configs_1.default.env === 'production',
         httpOnly: true,
@@ -92,8 +67,8 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
         data: result,
     });
 }));
-exports.AuthController = {
-    createUser,
-    userLogin,
+exports.AdminController = {
+    createAdmin,
+    loginAdmin,
     refreshToken,
 };
