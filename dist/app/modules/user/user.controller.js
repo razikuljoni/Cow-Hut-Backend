@@ -19,7 +19,6 @@ const user_service_1 = require("./user.service");
 const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
 const configs_1 = __importDefault(require("../../../configs"));
 const getAllUsers = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // console.log(req.user)
     const result = yield user_service_1.UserService.getAllUsers();
     res.status(http_status_1.OK).json({
         success: true,

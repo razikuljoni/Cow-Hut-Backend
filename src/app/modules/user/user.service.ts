@@ -1,9 +1,9 @@
 import { NOT_ACCEPTABLE } from 'http-status';
 import ApiError from '../../../errors/ApiError';
+import { IAdmin } from '../admin/admin.interface';
+import { Admin } from '../admin/admin.model';
 import { IUser } from './user.interface';
 import { User } from './user.model';
-import { Admin } from '../admin/admin.model';
-import { IAdmin } from '../admin/admin.interface';
 
 const getAllUsers = async () => {
     const result = await User.find();
@@ -79,7 +79,6 @@ const updateUserProfile = async (
     const budget = Object.keys(payload).find(key => key === 'budget');
     const income = Object.keys(payload).find(key => key === 'income');
     const userRole = Object.keys(payload).find(key => key === 'role');
-    console.log(userRole);
     if (role === 'admin') {
         const result = await Admin.findOneAndUpdate({ _id: id }, payload, {
             new: true,

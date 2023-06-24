@@ -1,14 +1,12 @@
 import { Request, Response } from 'express';
 import httpStatus, { OK } from 'http-status';
-import { AuthService } from './auth.service';
-import catchAsync from '../../../shared/catchAsync';
 import configs from '../../../configs';
+import catchAsync from '../../../shared/catchAsync';
+import { AuthService } from './auth.service';
 
 const createUser = catchAsync(async (req: Request, res: Response) => {
     const user = req.body;
     const result = await AuthService.createUser(user);
-    // const {password , ...data} = result;
-    // createLogger(password)
 
     res.status(httpStatus.OK).json({
         success: true,
@@ -48,7 +46,7 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
     res.status(OK).json({
         success: true,
         statusCode: OK,
-        message: '🆗 Admin LoggedIn Successfully!',
+        message: '🆗 User LoggedIn Successfully!',
         data: result,
     });
 });

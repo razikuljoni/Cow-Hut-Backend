@@ -14,7 +14,6 @@ declare module 'express' {
     }
 }
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-    // console.log(req.user)
     const result = await UserService.getAllUsers();
 
     res.status(OK).json({

@@ -12,10 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const ApiError_1 = __importDefault(require("../../errors/ApiError"));
 const http_status_1 = require("http-status");
-const jwtHelpers_1 = require("../../helpers/jwtHelpers");
 const configs_1 = __importDefault(require("../../configs"));
+const ApiError_1 = __importDefault(require("../../errors/ApiError"));
+const jwtHelpers_1 = require("../../helpers/jwtHelpers");
 const auth = (...requiredRoles) => (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const token = req.headers.authorization;

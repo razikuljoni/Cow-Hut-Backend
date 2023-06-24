@@ -48,14 +48,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
 const http_status_1 = __importStar(require("http-status"));
-const auth_service_1 = require("./auth.service");
-const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
 const configs_1 = __importDefault(require("../../../configs"));
+const catchAsync_1 = __importDefault(require("../../../shared/catchAsync"));
+const auth_service_1 = require("./auth.service");
 const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body;
     const result = yield auth_service_1.AuthService.createUser(user);
-    // const {password , ...data} = result;
-    // createLogger(password)
     res.status(http_status_1.default.OK).json({
         success: true,
         statusCode: http_status_1.default.OK,
@@ -88,7 +86,7 @@ const refreshToken = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, v
     res.status(http_status_1.OK).json({
         success: true,
         statusCode: http_status_1.OK,
-        message: '🆗 Admin LoggedIn Successfully!',
+        message: '🆗 User LoggedIn Successfully!',
         data: result,
     });
 }));

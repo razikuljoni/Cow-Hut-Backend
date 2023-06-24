@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserService = void 0;
 const http_status_1 = require("http-status");
 const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
-const user_model_1 = require("./user.model");
 const admin_model_1 = require("../admin/admin.model");
+const user_model_1 = require("./user.model");
 const getAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.User.find();
     return result;
@@ -70,7 +70,6 @@ const updateUserProfile = (id, role, payload) => __awaiter(void 0, void 0, void 
     const budget = Object.keys(payload).find(key => key === 'budget');
     const income = Object.keys(payload).find(key => key === 'income');
     const userRole = Object.keys(payload).find(key => key === 'role');
-    console.log(userRole);
     if (role === 'admin') {
         const result = yield admin_model_1.Admin.findOneAndUpdate({ _id: id }, payload, {
             new: true,

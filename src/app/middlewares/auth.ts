@@ -1,9 +1,9 @@
 import { NextFunction, Request, Response } from 'express';
-import ApiError from '../../errors/ApiError';
 import { FORBIDDEN, UNAUTHORIZED } from 'http-status';
-import { jwtHelpers } from '../../helpers/jwtHelpers';
-import configs from '../../configs';
 import { Secret } from 'jsonwebtoken';
+import configs from '../../configs';
+import ApiError from '../../errors/ApiError';
+import { jwtHelpers } from '../../helpers/jwtHelpers';
 
 // Extend the Request interface to include the 'user' property
 declare module 'express' {
