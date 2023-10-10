@@ -13,31 +13,30 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
-const http_status_1 = require("http-status");
-const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
-const user_model_1 = require("../user/user.model");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const http_status_1 = require("http-status");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const configs_1 = __importDefault(require("../../../configs"));
+const ApiError_1 = __importDefault(require("../../../errors/ApiError"));
 const jwtHelpers_1 = require("../../../helpers/jwtHelpers");
+const user_model_1 = require("../user/user.model");
 const createUser = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    if (user.role === 'buyer') {
-        if (user.budget < 0 || !user.budget) {
-            throw new Error('⚠️ Buyer is required budget and more than zero!');
-        }
-        else {
-            user.income = 0;
-        }
-    }
-    if (user.role === 'seller') {
-        if (user.budget > 0 || user.income > 0) {
-            throw new Error('⚠️ Seller might not need any budget or income!');
-        }
-        else {
-            user.income = 0;
-            user.budget = 0;
-        }
-    }
+    // INFO: Extra validation for budget and income. change after geeting assignment mark
+    // if (user.role === 'buyer') {
+    //     if (user.budget < 0 || !user.budget) {
+    //         throw new Error('⚠️ Buyer is required budget and more than zero!');
+    //     } else {
+    //         user.income = 0;
+    //     }
+    // }
+    // if (user.role === 'seller') {
+    //     if (user.budget > 0 || user.income > 0) {
+    //         throw new Error('⚠️ Seller might not need any budget or income!');
+    //     } else {
+    //         user.income = 0;
+    //         user.budget = 0;
+    //     }
+    // }
     const createdUser = yield user_model_1.User.create(user);
     if (!createdUser) {
         throw new ApiError_1.default(http_status_1.BAD_REQUEST, '🚫 User creation failed!');

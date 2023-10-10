@@ -43,7 +43,7 @@ const createOrder = (order) => __awaiter(void 0, void 0, void 0, function* () {
                 return result;
             }
             else {
-                throw new ApiError_1.default(http_status_1.NOT_ACCEPTABLE, '🚫 You dont have enough money to buy this cow!');
+                throw new ApiError_1.default(http_status_1.NOT_ACCEPTABLE, '🚫 You dont have enough money to buy this cow! Please update your budget');
             }
         }
         else {

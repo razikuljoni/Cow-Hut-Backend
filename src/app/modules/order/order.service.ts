@@ -47,7 +47,7 @@ const createOrder = async (order: IOrder): Promise<IOrder | null> => {
             } else {
                 throw new ApiError(
                     NOT_ACCEPTABLE,
-                    '🚫 You dont have enough money to buy this cow!'
+                    '🚫 You dont have enough money to buy this cow! Please update your budget'
                 );
             }
         } else {

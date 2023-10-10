@@ -1,5 +1,3 @@
-import { NOT_ACCEPTABLE } from 'http-status';
-import ApiError from '../../../errors/ApiError';
 import { IAdmin } from '../admin/admin.interface';
 import { Admin } from '../admin/admin.model';
 import { IUser } from './user.interface';
@@ -21,37 +19,40 @@ const updateUser = async (
     id: string,
     payload: Partial<IUser>
 ): Promise<IUser | null | undefined> => {
-    const user = await getSingleUser(id);
+    // INFO: Extra validation for budget and income. change after geeting assignment mark
+    // const user = await getSingleUser(id);
+    // const budget = Object.keys(payload).find(key => key === 'budget');
+    // const income = Object.keys(payload).find(key => key === 'income');
+    // if (user?.role === 'seller') {
+    //     if (budget || income) {
+    //         throw new ApiError(
+    //             NOT_ACCEPTABLE,
+    //             '🚫 You can not update seller income or budget!'
+    //         );
+    //     } else {
+    //         const result = await User.findOneAndUpdate({ _id: id }, payload, {
+    //             new: true,
+    //         });
+    //         return result;
+    //     }
+    // } else if (user?.role === 'buyer') {
+    //     if (income) {
+    //         throw new ApiError(
+    //             NOT_ACCEPTABLE,
+    //             '🚫 You can not update buyer income!'
+    //         );
+    //     } else {
+    //         const result = await User.findOneAndUpdate({ _id: id }, payload, {
+    //             new: true,
+    //         });
+    //         return result;
+    //     }
+    // }
 
-    const budget = Object.keys(payload).find(key => key === 'budget');
-    const income = Object.keys(payload).find(key => key === 'income');
-    if (user?.role === 'seller') {
-        if (budget || income) {
-            throw new ApiError(
-                NOT_ACCEPTABLE,
-                '🚫 You can not update seller income or budget!'
-            );
-        } else {
-            const result = await User.findOneAndUpdate({ _id: id }, payload, {
-                new: true,
-            });
-
-            return result;
-        }
-    } else if (user?.role === 'buyer') {
-        if (income) {
-            throw new ApiError(
-                NOT_ACCEPTABLE,
-                '🚫 You can not update buyer income!'
-            );
-        } else {
-            const result = await User.findOneAndUpdate({ _id: id }, payload, {
-                new: true,
-            });
-
-            return result;
-        }
-    }
+    const result = await User.findOneAndUpdate({ _id: id }, payload, {
+        new: true,
+    });
+    return result;
 };
 
 const deleteUser = async (id: string): Promise<IUser | null> => {
@@ -76,48 +77,55 @@ const updateUserProfile = async (
     role: string,
     payload: Partial<IUser>
 ): Promise<IUser | IAdmin | null | undefined> => {
-    const budget = Object.keys(payload).find(key => key === 'budget');
-    const income = Object.keys(payload).find(key => key === 'income');
-    const userRole = Object.keys(payload).find(key => key === 'role');
-    if (role === 'admin') {
-        const result = await Admin.findOneAndUpdate({ _id: id }, payload, {
-            new: true,
-        });
-        return result;
-    } else if (role === 'seller') {
-        if (budget || income) {
-            throw new ApiError(
-                NOT_ACCEPTABLE,
-                '🚫 You can not update seller income or budget!'
-            );
-        } else if (userRole) {
-            throw new ApiError(
-                NOT_ACCEPTABLE,
-                '🚫 Seller can not update role!'
-            );
-        } else {
-            const result = await User.findOneAndUpdate({ _id: id }, payload, {
-                new: true,
-            });
+    // INFO: Extra validation for budget and income. change after geeting assignment mark
+    // const budget = Object.keys(payload).find(key => key === 'budget');
+    // const income = Object.keys(payload).find(key => key === 'income');
+    // const userRole = Object.keys(payload).find(key => key === 'role');
+    // if (role === 'admin') {
+    //     const result = await Admin.findOneAndUpdate({ _id: id }, payload, {
+    //         new: true,
+    //     });
+    //     return result;
+    // } else if (role === 'seller') {
+    //     if (budget || income) {
+    //         throw new ApiError(
+    //             NOT_ACCEPTABLE,
+    //             '🚫 You can not update seller income or budget!'
+    //         );
+    //     } else if (userRole) {
+    //         throw new ApiError(
+    //             NOT_ACCEPTABLE,
+    //             '🚫 Seller can not update role!'
+    //         );
+    //     } else {
+    //         const result = await User.findOneAndUpdate({ _id: id }, payload, {
+    //             new: true,
+    //         });
 
-            return result;
-        }
-    } else if (role === 'buyer') {
-        if (income) {
-            throw new ApiError(
-                NOT_ACCEPTABLE,
-                '🚫 You can not update buyer income!'
-            );
-        } else if (userRole) {
-            throw new ApiError(NOT_ACCEPTABLE, '🚫 Buyer can not update role!');
-        } else {
-            const result = await User.findOneAndUpdate({ _id: id }, payload, {
-                new: true,
-            });
+    //         return result;
+    //     }
+    // } else if (role === 'buyer') {
+    //     if (income) {
+    //         throw new ApiError(
+    //             NOT_ACCEPTABLE,
+    //             '🚫 You can not update buyer income!'
+    //         );
+    //     } else if (userRole) {
+    //         throw new ApiError(NOT_ACCEPTABLE, '🚫 Buyer can not update role!');
+    //     } else {
+    //         const result = await User.findOneAndUpdate({ _id: id }, payload, {
+    //             new: true,
+    //         });
 
-            return result;
-        }
-    }
+    //         return result;
+    //     }
+    // }
+
+    const result = await User.findOneAndUpdate({ _id: id }, payload, {
+        new: true,
+    });
+
+    return result;
 };
 
 export const UserService = {

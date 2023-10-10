@@ -1,33 +1,34 @@
+import bcrypt from 'bcrypt';
 import { BAD_REQUEST, FORBIDDEN, NOT_FOUND, UNAUTHORIZED } from 'http-status';
+import jwt, { Secret } from 'jsonwebtoken';
+import configs from '../../../configs';
 import ApiError from '../../../errors/ApiError';
-import { IUser } from '../user/user.interface';
-import { User } from '../user/user.model';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import {
     ILoggedInUser,
     ILoggedInUserResponse,
     IRefreshTokenResponse,
 } from '../admin/admin.interface';
-import bcrypt from 'bcrypt';
-import jwt, { Secret } from 'jsonwebtoken';
-import configs from '../../../configs';
-import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import { IUser } from '../user/user.interface';
+import { User } from '../user/user.model';
 
 const createUser = async (user: IUser): Promise<Partial<IUser> | null> => {
-    if (user.role === 'buyer') {
-        if (user.budget < 0 || !user.budget) {
-            throw new Error('⚠️ Buyer is required budget and more than zero!');
-        } else {
-            user.income = 0;
-        }
-    }
-    if (user.role === 'seller') {
-        if (user.budget > 0 || user.income > 0) {
-            throw new Error('⚠️ Seller might not need any budget or income!');
-        } else {
-            user.income = 0;
-            user.budget = 0;
-        }
-    }
+    // INFO: Extra validation for budget and income. change after geeting assignment mark
+    // if (user.role === 'buyer') {
+    //     if (user.budget < 0 || !user.budget) {
+    //         throw new Error('⚠️ Buyer is required budget and more than zero!');
+    //     } else {
+    //         user.income = 0;
+    //     }
+    // }
+    // if (user.role === 'seller') {
+    //     if (user.budget > 0 || user.income > 0) {
+    //         throw new Error('⚠️ Seller might not need any budget or income!');
+    //     } else {
+    //         user.income = 0;
+    //         user.budget = 0;
+    //     }
+    // }
 
     const createdUser = await User.create(user);
 
