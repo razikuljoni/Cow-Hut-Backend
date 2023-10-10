@@ -1,15 +1,11 @@
 import express from 'express';
-import { CowController } from './cow.controller';
-import auth from '../../middlewares/auth';
 import { ENUM_USER_ROLE } from '../../../enums/user';
+import auth from '../../middlewares/auth';
+import { CowController } from './cow.controller';
 
 const router = express.Router();
 
-router.post(
-    '/create-cow',
-    auth(ENUM_USER_ROLE.SELLER),
-    CowController.createCow
-);
+router.post('/', auth(ENUM_USER_ROLE.SELLER), CowController.createCow);
 router.get(
     '/:id',
     auth(ENUM_USER_ROLE.SELLER, ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.BUYER),

@@ -20,7 +20,7 @@
    - Route: https://cow-hut-admin-auth.vercel.app/api/v1/users/648ec9bd3c125b692bda7cc8 (DELETE)
 
    #### Cows
-   - Route: https://cow-hut-admin-auth.vercel.app/api/v1/cows/create-cow (POST)
+   - Route: https://cow-hut-admin-auth.vercel.app/api/v1/cows (POST)
    - Route: https://cow-hut-admin-auth.vercel.app/api/v1/cows (GET)
    - Route: https://cow-hut-admin-auth.vercel.app/api/v1/cows/64971c2fcdd695603209efae (Single GET)
    - Route: https://cow-hut-admin-auth.vercel.app/api/v1/cows/64966f9de5c43d59108fef72 (PATCH)
