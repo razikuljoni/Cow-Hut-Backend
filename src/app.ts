@@ -1,6 +1,6 @@
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
-import cookieParser from 'cookie-parser';
 import { NOT_FOUND } from 'http-status';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import router from './app/routes';
@@ -16,6 +16,11 @@ app.use(express.urlencoded({ extended: true }));
 
 // Application routes
 app.use('/api/v1/', router);
+
+// Heartbeat route
+app.all('/', (req: Request, res: Response) => {
+    res.send('💓 Server is running....');
+});
 
 // Global Error Handler
 app.use(globalErrorHandler);

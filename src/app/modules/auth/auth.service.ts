@@ -73,7 +73,10 @@ const userLogin = async (
             role: isUserExists?.role,
         },
         configs.jwt.secret as Secret,
-        { expiresIn: configs.jwt.expires_in }
+        {
+            expiresIn: configs.jwt
+                .expires_in as unknown as import('jsonwebtoken').SignOptions['expiresIn'],
+        }
     );
 
     const refreshToken = jwt.sign(
@@ -82,7 +85,10 @@ const userLogin = async (
             role: isUserExists?.role,
         },
         configs.jwt.refresh_secret as Secret,
-        { expiresIn: configs.jwt.refresh_expires_in }
+        {
+            expiresIn: configs.jwt
+                .refresh_expires_in as unknown as import('jsonwebtoken').SignOptions['expiresIn'],
+        }
     );
 
     return {
@@ -119,7 +125,8 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
             role: isUserExists?.role,
         },
         configs.jwt.secret as Secret,
-        configs.jwt.expires_in as string
+        configs.jwt
+            .expires_in as unknown as import('jsonwebtoken').SignOptions['expiresIn']
     );
 
     return {

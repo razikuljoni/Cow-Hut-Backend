@@ -1,3 +1,9 @@
+import bcrypt from 'bcrypt';
+import { BAD_REQUEST, FORBIDDEN, NOT_FOUND, UNAUTHORIZED } from 'http-status';
+import jwt, { Secret } from 'jsonwebtoken';
+import configs from '../../../configs';
+import ApiError from '../../../errors/ApiError';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
 import {
     IAdmin,
     ILoggedInUser,
@@ -5,12 +11,6 @@ import {
     IRefreshTokenResponse,
 } from './admin.interface';
 import { Admin } from './admin.model';
-import ApiError from '../../../errors/ApiError';
-import { BAD_REQUEST, FORBIDDEN, NOT_FOUND, UNAUTHORIZED } from 'http-status';
-import bcrypt from 'bcrypt';
-import jwt, { Secret } from 'jsonwebtoken';
-import configs from '../../../configs';
-import { jwtHelpers } from '../../../helpers/jwtHelpers';
 
 const createAdmin = async (admin: IAdmin): Promise<Partial<IAdmin>> => {
     const createdAdmin = Admin.create(admin);
@@ -56,7 +56,10 @@ const loginAdmin = async (
             role: isAdminExist?.role,
         },
         configs.jwt.secret as Secret,
-        { expiresIn: configs.jwt.expires_in }
+        {
+            expiresIn: configs.jwt
+                .expires_in as unknown as import('jsonwebtoken').SignOptions['expiresIn'],
+        }
     );
 
     const refreshToken = jwt.sign(
@@ -65,7 +68,10 @@ const loginAdmin = async (
             role: isAdminExist?.role,
         },
         configs.jwt.refresh_secret as Secret,
-        { expiresIn: configs.jwt.refresh_expires_in }
+        {
+            expiresIn: configs.jwt
+                .refresh_expires_in as unknown as import('jsonwebtoken').SignOptions['expiresIn'],
+        }
     );
 
     return {
@@ -102,7 +108,8 @@ const refreshToken = async (token: string): Promise<IRefreshTokenResponse> => {
             role: isAdminExist?.role,
         },
         configs.jwt.secret as Secret,
-        configs.jwt.expires_in as string
+        configs.jwt
+            .expires_in as unknown as import('jsonwebtoken').SignOptions['expiresIn']
     );
 
     return {
