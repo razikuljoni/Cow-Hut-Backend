@@ -3,7 +3,15 @@ import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
 import { NOT_FOUND } from 'http-status';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
-import router from './app/routes';
+// import router from './app/routes';
+
+// Module Routes
+import { AuthRoutes } from './app/modules/auth/auth.router';
+import { CowRoutes } from './app/modules/cow/cow.route';
+import { OrderRoutes } from './app/modules/order/order.route';
+import { UserRoutes } from './app/modules/user/user.router';
+import { AdminRoutes } from './app/modules/admin/admin.route';
+
 const app = express();
 
 // Cors setup
@@ -15,7 +23,12 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
 // Application routes
-app.use('/api/v1/', router);
+// app.use('/api/v1/', router);
+app.use('/api/v1/auth', AuthRoutes);
+app.use('/api/v1/cows', CowRoutes);
+app.use('/api/v1/orders', OrderRoutes);
+app.use('/api/v1/users', UserRoutes);
+app.use('/api/v1/admins', AdminRoutes);
 
 // Heartbeat route
 app.all('/', (req: Request, res: Response) => {
