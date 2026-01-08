@@ -6,11 +6,11 @@ import globalErrorHandler from './app/middlewares/globalErrorHandler';
 // import router from './app/routes';
 
 // Module Routes
+import { AdminRoutes } from './app/modules/admin/admin.route';
 import { AuthRoutes } from './app/modules/auth/auth.router';
 import { CowRoutes } from './app/modules/cow/cow.route';
 import { OrderRoutes } from './app/modules/order/order.route';
 import { UserRoutes } from './app/modules/user/user.router';
-import { AdminRoutes } from './app/modules/admin/admin.route';
 
 const app = express();
 
