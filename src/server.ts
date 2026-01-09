@@ -12,7 +12,7 @@ process.on('uncaughtException', () => {
 async function main() {
     try {
         await mongoose.connect(configs.database_url as string);
-        console.log('🆗 Database Connection Successfull!');
+        console.log('🆗 Database Connection Successful!');
 
         server = app.listen(configs.port, () =>
             console.log(`🆗 Server Listening on port ${configs.port}!`)
